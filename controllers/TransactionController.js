@@ -15,6 +15,40 @@ class TransactionController {
     });
   }
 
+  static async show(req, res) {
+    const transactionId = req.params.transactionId;
+
+    if (!transactionId || isNaN(transactionId)) {
+      return res
+        .status(400)
+        .json({ error: true, message: "transactionId is required" });
+    }
+
+    const transaction = await UserTransactions.findOne({
+      where: { id: transactionId, userId: req.user.id },
+    });
+
+    if (!transaction) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Transaction not found" });
+    }
+
+    const carts = await UserCarts.findAll({
+      where: { id: { [Op.in]: transaction.cartsId } },
+    });
+
+    const newTransaction = transaction.toJSON();
+    newTransaction.carts = carts;
+    delete newTransaction.cartsId;
+
+    return res.status(200).json({
+      error: false,
+      message: "Success get transaction",
+      data: newTransaction,
+    });
+  }
+
   static async checkout(req, res) {
     const { cartsId } = req.body;
 
