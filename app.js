@@ -12,9 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const productRouter = require("./routes/product");
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use(productRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
