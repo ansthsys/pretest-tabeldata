@@ -49,6 +49,43 @@ class TransactionController {
       data: invoice,
     });
   }
+
+  static async payment(req, res) {
+    const transactionId = req.params.transactionId;
+
+    if (!transactionId || isNaN(transactionId)) {
+      return res
+        .status(400)
+        .json({ error: true, message: "transactionId is required" });
+    }
+
+    const transaction = await UserTransactions.findOne({
+      where: { id: transactionId, userId: req.user.id },
+    });
+
+    if (!transaction) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Transaction not found" });
+    }
+
+    if (transaction.status !== "unpaid") {
+      return res
+        .status(400)
+        .json({ error: true, message: "Transaction already paid" });
+    }
+
+    const updatedTransaction = await transaction.update({
+      status: "paid",
+      updatedAt: new Date(),
+    });
+
+    return res.status(200).json({
+      error: false,
+      message: "Payment successfully",
+      data: updatedTransaction,
+    });
+  }
 }
 
 module.exports = TransactionController;

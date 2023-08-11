@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 app.use(authRouter);
 app.use(productRouter);
 app.use(cartRouter);
-app.use("/transactions", transactionRouter);
+app.use(transactionRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
