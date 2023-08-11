@@ -17,9 +17,23 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       invoiceId: DataTypes.STRING,
       orderDate: DataTypes.DATE,
-      cartsId: DataTypes.STRING,
+      cartsId: {
+        type: DataTypes.STRING,
+        get() {
+          return JSON.parse(this.getDataValue("cartsId"));
+        },
+        set(value) {
+          this.setDataValue("cartsId", JSON.stringify(value));
+        },
+      },
       totalAmount: DataTypes.DECIMAL,
-      status: DataTypes.ENUM(["paid", "unpaid", "delivered", "canceled", "expired"]),
+      status: DataTypes.ENUM([
+        "paid",
+        "unpaid",
+        "delivered",
+        "canceled",
+        "expired",
+      ]),
     },
     {
       sequelize,
