@@ -43,6 +43,40 @@ class CartController {
       data: { type: "Bearer", token },
     });
   }
+
+  static async register(req, res) {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Name, email and password is required" });
+    }
+
+    const [user, created] = await Users.findOrCreate({
+      where: { email },
+      defaults: {
+        name,
+        email,
+        password,
+        isAdmin: false,
+      },
+    });
+
+    if (!created) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Email already registered" });
+    }
+
+    return res
+      .status(201)
+      .json({
+        error: false,
+        message: "Success register",
+        data: { id: user.id, name: user.name, email: user.email },
+      });
+  }
 }
 
 module.exports = CartController;
