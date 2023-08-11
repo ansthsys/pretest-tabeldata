@@ -31,6 +31,7 @@ class ProductController {
     const { name } = req.query;
     const product = await Products.findAll({
       where: { name: { [Op.substring]: name } },
+      order: [["name", "ASC"]],
     });
 
     if (product.length === 0) {

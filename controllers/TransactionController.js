@@ -1,11 +1,12 @@
 const { randomBytes } = require("crypto");
 const { Op } = require("sequelize");
-const { Users, UserCarts, UserTransactions } = require("../models");
+const { UserCarts, UserTransactions } = require("../models");
 
 class TransactionController {
   static async index(req, res) {
     const transactions = await UserTransactions.findAll({
       where: { userId: req.user.id },
+      order: [["orderDate", "DESC"]],
     });
 
     return res.status(200).json({
