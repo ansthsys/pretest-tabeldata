@@ -36,7 +36,7 @@ class TransactionController {
     }
 
     const carts = await UserCarts.findAll({
-      where: { id: { [Op.in]: transaction.cartsId } },
+      where: { id: { [Op.in]: JSON.parse(transaction.cartsId) } },
     });
 
     const newTransaction = transaction.toJSON();
