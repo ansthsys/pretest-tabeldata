@@ -1,8 +1,20 @@
 const { randomBytes } = require("crypto");
 const { Op } = require("sequelize");
-const { UserCarts, UserTransactions } = require("../models");
+const { Users, UserCarts, UserTransactions } = require("../models");
 
 class TransactionController {
+  static async index(req, res) {
+    const transactions = await UserTransactions.findAll({
+      where: { userId: req.user.id },
+    });
+
+    return res.status(200).json({
+      error: false,
+      message: "Success get transactions",
+      data: transactions,
+    });
+  }
+
   static async checkout(req, res) {
     const { cartsId } = req.body;
 
