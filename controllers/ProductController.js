@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Products } = require("../models");
 
 class ProductController {
@@ -24,6 +25,23 @@ class ProductController {
     return res
       .status(200)
       .json({ error: false, message: "Get single product", data: product });
+  }
+
+  static async search(req, res) {
+    const { name } = req.query;
+    const product = await Products.findAll({
+      where: { name: { [Op.substring]: name } },
+    });
+
+    if (product.length === 0) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Product not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ error: false, message: "Search product", data: product });
   }
 }
 
