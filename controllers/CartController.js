@@ -3,7 +3,7 @@ const { UserCarts, Products } = require("../models");
 class CartController {
   static async index(req, res) {
     const carts = await UserCarts.findAll({
-      where: { userId: req.user.id },
+      where: { userId: req.user.id, checkouted: false },
       order: [["createdAt", "DESC"]],
     });
 
