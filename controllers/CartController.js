@@ -21,6 +21,12 @@ class CartController {
         .json({ error: true, message: "productId and quantity not valid" });
     }
 
+    if (quantity <= 0 || quantity >= 100) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Quantity exceeds the limit" });
+    }
+
     const product = await Products.findByPk(productId);
 
     if (!product) {
@@ -50,6 +56,12 @@ class CartController {
       return res
         .status(400)
         .json({ error: true, message: "quantity not valid" });
+    }
+
+    if (quantity <= 0 || quantity >= 100) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Quantity exceeds the limit" });
     }
 
     const cart = await UserCarts.findByPk(cartId);
