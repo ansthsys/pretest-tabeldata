@@ -37,6 +37,7 @@ class TransactionController {
 
     const carts = await UserCarts.findAll({
       where: { id: { [Op.in]: JSON.parse(transaction.cartsId) } },
+      include: ["product"],
     });
 
     const newTransaction = transaction.toJSON();
