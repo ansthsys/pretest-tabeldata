@@ -1,5 +1,9 @@
 # Pretest Internship - Tabel Data
 
+Postman [Documentation](https://documenter.getpostman.com/view/20118417/2s9Xy5Kpv9)
+
+<hr />
+
 System requirement:
 
 1.  NodeJS version >= `18.17.0`
