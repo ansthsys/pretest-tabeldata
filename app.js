@@ -14,6 +14,7 @@ app.use(cookieParser());
 
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
+const cartRouter = require("./routes/cart");
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use(authRouter);
 app.use(productRouter);
+app.use(cartRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
