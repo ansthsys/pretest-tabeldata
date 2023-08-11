@@ -24,6 +24,12 @@ module.exports = {
       },
       cartsId: {
         type: Sequelize.STRING,
+        get() {
+          return this.getDataValue("cartsId").split(";");
+        },
+        set(value) {
+          this.setDataValue("cartsId", value.join(";"));
+        },
       },
       totalAmount: {
         type: Sequelize.DECIMAL,
