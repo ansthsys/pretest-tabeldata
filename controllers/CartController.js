@@ -86,6 +86,22 @@ class CartController {
       .status(200)
       .json({ error: false, message: "Cart updated", data: cart });
   }
+
+  static async destroy(req, res) {
+    const { cartId } = req.params;
+
+    const cart = await UserCarts.findByPk(cartId);
+
+    if (!cart) {
+      return res.status(404).json({ error: true, message: "Cart not found" });
+    }
+
+    await cart.destroy();
+
+    return res
+      .status(200)
+      .json({ error: false, message: "Cart deleted", data: cart });
+  }
 }
 
 module.exports = CartController;
