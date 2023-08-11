@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       orderDate: DataTypes.DATE,
       cartsId: DataTypes.STRING,
       totalAmount: DataTypes.DECIMAL,
-      status: DataTypes.ENUM,
+      status: DataTypes.ENUM(["paid", "unpaid", "delivered", "canceled", "expired"]),
     },
     {
       sequelize,
