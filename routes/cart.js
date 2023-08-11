@@ -5,5 +5,6 @@ const CartController = require("../controllers/CartController");
 
 router.get("/carts/", AuthMiddleware, CartController.index);
 router.post("/carts/", AuthMiddleware, CartController.store);
+router.put("/carts/:cartId", AuthMiddleware, CartController.update);
 
 module.exports = router;

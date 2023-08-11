@@ -41,6 +41,39 @@ class CartController {
       .status(201)
       .json({ error: false, message: "Cart created", data: cart });
   }
+
+  static async update(req, res) {
+    const { cartId } = req.params;
+    const { quantity } = req.body;
+
+    if (!quantity || typeof quantity !== "number") {
+      return res
+        .status(400)
+        .json({ error: true, message: "quantity not valid" });
+    }
+
+    const cart = await UserCarts.findByPk(cartId);
+
+    if (!cart) {
+      return res.status(404).json({ error: true, message: "Cart not found" });
+    }
+
+    const product = await Products.findByPk(cart.productId);
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Product not found" });
+    }
+
+    cart.amount = product.price * quantity;
+    cart.quantity = quantity;
+    await cart.save();
+
+    return res
+      .status(200)
+      .json({ error: false, message: "Cart updated", data: cart });
+  }
 }
 
 module.exports = CartController;
