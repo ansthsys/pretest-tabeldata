@@ -12,12 +12,20 @@ class TransactionController {
         .json({ error: true, message: "cartsId is required" });
     }
 
-    const carts = await UserCarts.findAll({ where: { id: cartsId } });
+    const carts = await UserCarts.findAll({
+      where: { id: cartsId, checkouted: false },
+    });
     const invoiceId = `INV-${randomBytes(10).toString("hex").toUpperCase()}`;
     const totalAmount = carts.reduce(
       (acc, cart) => acc + Number(cart.amount),
       0
     );
+
+    if (carts.length === 0) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Cart not found or already checkout" });
+    }
 
     const invoice = await UserTransactions.create({
       userId: req.user.id,
@@ -35,7 +43,7 @@ class TransactionController {
       );
     }
 
-    return res.status(200).json({
+    return res.status(201).json({
       error: false,
       message: "Success checkout",
       data: invoice,
